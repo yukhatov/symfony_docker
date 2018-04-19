@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+
+  app:
+    build: .docker/php
+    volumes:
+      - .:/var/www/html
+      - ./var/logs:/var/www/html/var/logs
+      - ./var/cache.:/var/www/html/var/cache
+
+  nginx:
+
+    build: .docker/nginx
+    volumes_from:
+      - app
+    ports:
+      - "81:80"
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: db
